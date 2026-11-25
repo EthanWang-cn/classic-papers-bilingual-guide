@@ -1,0 +1,72 @@
+<h2>Part 3 · 总结对照导读 + 我的理解</h2>
+<p class="subtitle">Summary, comparative reading, and what actually matters in 2026</p>
+
+<h3>一、一句话总结</h3>
+<div class="callout"><div class="ct">TL;DR</div>在 BERT 之前，预训练语言模型只能「续写」（GPT）或把两个单向模型「拼起来」（ELMo）。BERT 把任务换成<strong>完形填空</strong>——随机盖住 15% 的词，让模型根据左右上下文猜回来——于是每一层都能同时看见两边。下游任务只需加一层输出头微调，一个模型横扫 11 项 NLP 纪录。<strong>它把 NLP 变成了 ImageNet 式的流水线：昂贵地预训练一次，便宜地适配无数次。</strong></div>
+
+<h3>二、它之前的世界：三条路线，一个共同枷锁</h3>
+<p>2018 年之前，「用无标注文本预训练，再迁移到下游任务」已经是共识，但路线分叉成三条：</p>
+<table>
+<thead><tr><th style="width:22%">路线</th><th>代表</th><th>怎么用</th><th>致命局限</th></tr></thead>
+<tbody>
+<tr><td><b>静态词嵌入</b></td><td>Word2Vec / GloVe</td><td>作为特征喂给任务模型</td><td>一词一义，<b>没有上下文</b>：「bank」在河岸和银行是同一个向量</td></tr>
+<tr><td><b>特征式上下文嵌入</b></td><td>ELMo</td><td>左右两个 LSTM 各跑一遍，<b>最后拼接</b>成特征</td><td>只有表层双向：第 k 层时，左右两个方向<b>互不知情</b></td></tr>
+<tr><td><b>微调式单向 LM</b></td><td>GPT / ULMFiT</td><td>预训练后加任务头，微调全部参数</td><td>只能从左到右：读问答时，<b>答案词看不到后面的上下文</b></td></tr>
+</tbody>
+</table>
+<p>注意共同点：<strong>三条路线的预训练目标本质上都是「预测下一个词」</strong>。而「预测下一个词」这个任务，天然只允许看左边——因为如果允许看右边，目标词就在输入里，模型直接抄答案，任务失去意义。这就是作者说的 <em>bidirectional conditioning would allow each word to indirectly "see itself"</em>。</p>
+<div class="warn"><b>理解这篇论文的关键一步：</b>不是问「BERT 用了什么新架构」（没有，就是 Transformer 编码器），而是问「<b>它换了什么目标函数，才让双向成为可能</b>」。答案是 MLM。一个目标函数的替换，解开了一个架构层面的死结——这是全篇最漂亮的一招。</div>
+
+<h3>三、核心机制：完形填空如何解开死结</h3>
+<table>
+<thead><tr><th style="width:24%">设计</th><th>做法</th><th>为什么必要</th></tr></thead>
+<tbody>
+<tr><td><b>MLM</b></td><td>随机遮住 15% 词元，用左右上下文预测被遮住的原词</td><td>被预测的词<b>不在输入里</b>，所以「双向看」不会作弊；模型被迫学会利用两侧信息</td></tr>
+<tr><td><b>80/10/10</b></td><td>选中的 15% 里：80% 换 [MASK]、10% 换随机词、10% 保持原词</td><td>[MASK] 在微调时不出现，会造成不匹配；掺入噪声让模型<b>对每个位置都保持好表示</b>，无法预测哪里会被考到</td></tr>
+<tr><td><b>NSP</b></td><td>50% 真实下一句 / 50% 随机句，用 [CLS] 判断</td><td>QA、NLI 需要理解<b>句子间关系</b>，纯语言建模不直接提供这个信号</td></tr>
+<tr><td><b>三种嵌入相加</b></td><td>词元嵌入 + 段落嵌入(A/B) + 位置嵌入</td><td>一个序列里要同时表达「单句 / 句对」和「哪个词属于哪一句」，且保持 Transformer 的无序输入习惯</td></tr>
+</tbody>
+</table>
+<p><strong>MLM 与去噪自编码器的区别</strong>常被问到：DAE 要重构<em>整个</em>被噪声破坏的输入，MLM <em>只预测被遮住的那 15%</em>。这个「只考一小部分」的选择让训练信号更集中，但也让收敛变慢——作者用 100 万步来换（附录 C.1 证明这笔交易划算）。</p>
+<p>另一个容易被跳过的细节是 <strong>90% 步数用长度 128、10% 用 512</strong>（附录 A.2）。注意力是 O(n²)，这样既省算力，又让模型见过长序列的位置嵌入。今天训练长上下文模型时的混合长度批次、课程学习，都是同一思路。</p>
+
+<h3>四、我的理解：BERT 到底「新」在哪</h3>
+<ol>
+<li><strong>它终结了「为每个任务设计架构」的时代。</strong>在 BERT 之前，问答有 BiDAF，推理有 ESIM，NER 有 BiLSTM-CRF——每个任务一套精巧结构。BERT 说：用一个统一 backbone，只在最后加一层输出头。表 1–4 证明这条路在所有任务上都赢。<em>这才是它最深远的影响</em>：不是某个指标高了几点，而是把「做 NLP 应用」从「设计架构」变成了「准备数据 + 微调」。</li>
+<li><strong>它把 ImageNet 范式真正搬进了 NLP。</strong>论文 2.3 节直接点名 ImageNet 预训练。两者同构：昂贵的特征提取器预训练一次（ImageNet  backbone / BERT），廉价地适配到无数小任务。差别在于视觉任务输入是固定长度的图，语言的「输入」需要靠 [CLS]/[SEP]/A-B 嵌入这种协议去编码任务结构——BERT 的真正发明是<strong>这套输入协议</strong>，它让所有任务都能塞进同一个序列格式。</li>
+<li><strong>「预训练 = 压缩知识，微调 = 对齐任务」的清晰分工。</strong>表 5 最有说服力：单向模型事后加 BiLSTM（SQuAD 84.9）仍远不如预训练时就双向（88.5）。说明<strong>双向性必须长在表示里，不能靠下游补丁补回来</strong>。这个洞察后来被反复验证——这也是为什么大模型时代大家宁可花更多算力在 pre-training，也不愿只靠下游 adaptor 去弥补。</li>
+<li><strong>它最早清晰展示了「规模红利外溢到小任务」。</strong>表 6 里，24 层 1024 维的模型连只有 3600 条样本的 MRPC 都更好。在 2018 年，这是一个反直觉的结论：模型越大，小数据任务反而越受益。这条经验直接通向后来的 GPT-3 / LLaMA 的小样本能力——<strong>充分预训练 + 极少任务参数 = 规模的收益可以穿透数据稀缺</strong>。</li>
+</ol>
+<p>换句话说，如果把 Transformer 看成「给深度学习提供了通用的信息处理骨架」，那么 BERT 就是「<strong>给这个骨架找到了通用的学习任务</strong>」。前者解决<em>怎么算</em>，后者解决<em>学什么</em>。两篇连起来，就是整个现代 NLP 的地基。</p>
+
+<h3>五、和后续经典的因果链</h3>
+<table>
+<thead><tr><th style="width:26%">后来的工作</th><th>它如何继承 / 修正 BERT</th></tr></thead>
+<tbody>
+<tr><td><b>RoBERTa (2019)</b></td><td>更大批量、更多数据、更长训练，<strong>去掉 NSP 反而更好</strong>——证明 NSP 是时代补丁，MLM + 双向才是核心</td></tr>
+<tr><td><b>ALBERT (2019)</b></td><td>参数共享 + 分解嵌入，压缩 BERT 的显存占用——第一次系统挑战「大 = 好」的成本侧</td></tr>
+<tr><td><b>DistilBERT (2019)</b></td><td>知识蒸馏出 6 层小模型，保留 97% 性能、快 60%——把 BERT 推上生产环境</td></tr>
+<tr><td><b>T5 (2019) / BART (2019)</b></td><td>把「填空」推广为<strong>文本到文本</strong>的通用去噪目标，统一所有任务的输出形式</td></tr>
+<tr><td><b>GPT-3 (2020) → LLaMA (2023)</b></td><td>走另一条路：<strong>回到自回归</strong>，靠规模 + 上下文学习实现通用性。但预训练-适配的范式、Transformer 骨架、双向上下文的价值判断，都建立在 BERT 打下的共识之上</td></tr>
+<tr><td><b>今天的 Embedding 模型</b></td><td>BGE / E5 / GTE 等仍用 BERT 式编码器；[CLS] 与 mean-pooling 之争，源头就在 BERT 的 C 向量设计</td></tr>
+</tbody>
+</table>
+<div class="callout"><div class="ct">串起来读</div>AlexNet（深度 + 迁移）→ ResNet（让深度可训练）→ Transformer（通用骨架）→ <strong>BERT（通用学习目标）</strong> → GPT-3 / LLaMA（规模 + 生成）。本仓库前 5 篇正好是这条主线，按编号顺序读会看到思想如何一步步接力。</div>
+
+<h3>六、常见误解</h3>
+<ul>
+<li><strong>「BERT 是双向的，所以它能生成文本」？</strong>不能。双向意味着每个位置都看过左右全部词，生成时右边还没有词；而且 [MASK] 在推理时不存在。BERT 是<strong>编码器</strong>，擅长理解，不擅长逐字生成。要做生成请用 GPT 系或 BART/T5。</li>
+<li><strong>「BERT 的双向就是两个方向各跑一遍再拼接」？</strong>那是 ELMo。BERT 是<strong>同一个 Transformer 每一层都双向</strong>——图 3 把三者画得清清楚楚。差别不是工程细节，而是表示能力的上限（5.1 节消融证明）。</li>
+<li><strong>「NSP 是 BERT 成功的关键」？</strong>不是。表 5 显示去掉 NSP 只掉 0.5–3.5 点，而换成单向 LM 掉 10 点以上；RoBERTa 后来干脆去掉 NSP 还更好。NSP 是当时的合理尝试，不是核心机制。</li>
+<li><strong>「[CLS] 的向量就是一句高质量句向量」？</strong>论文脚注 6 明确警告：未经微调的 C 并不是有意义的句子表示，因为它被 NSP 训练过。今天用 BERT 做 embedding，通常 mean-pooling 或专门对比学习训练（如 SimCSE）效果更好。</li>
+<li><strong>「BERT 已经过时了，不用读」？</strong>恰恰相反。今天大量生产系统的 encoder、几乎所有 embedding 模型、以及整个「预训练 + 微调」的工程范式都是 BERT 确立的。读它才能理解 LLM 时代<em>为什么</em>是现在这个样子。</li>
+<li><strong>「80/10/10 只是调参玄学」？</strong>不是。附录表 8 给出对照：只做 MASK 时，特征式 NER 从 94.9 掉到 94.0；只做 RND 更差。这是有实验支撑的设计，核心是「让模型无法预测哪里会被考到」。</li>
+</ul>
+
+<h3>七、如果你只读三处</h3>
+<ol>
+<li><strong>图 3（附录 A.4）</strong>——三十秒看懂 BERT / GPT / ELMo 的架构差异，尤其是「每层双向」和「最后拼接」的区别；</li>
+<li><strong>3.1 节 + 附录 A.1</strong>——MLM 与 80/10/10 掩码策略，这是 BERT 真正的发明所在；</li>
+<li><strong>表 5</strong>——单向 vs 双向、有 NSP vs 无 NSP 的消融，告诉你哪些是核心、哪些是补丁。</li>
+</ol>
+<div class="footer-note" style="margin-top:2mm">导读与「我的理解」为本仓库原创，依据论文原文撰写。论文版权归原作者所有。更多论文请见 <span style="font-family:Georgia,serif">Classic Papers Bilingual Guide</span> · No.005。</div>

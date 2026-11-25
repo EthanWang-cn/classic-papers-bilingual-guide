@@ -52,10 +52,10 @@
 | # | 论文 | 年份 | 领域 | 为什么必读 | 状态 |
 |---:|---|---:|---|---|---|
 | 001 | [Attention Is All You Need](Attention%20Is%20All%20You%20Need.pdf) | 2017 | NLP / 架构 | 去掉循环与卷积，只用注意力建模序列；今天所有大模型的骨架 | ✅ |
-| 002 | ImageNet Classification with Deep Convolutional Neural Networks | 2012 | 视觉 | 深度学习复兴的起点：GPU + ReLU + Dropout + 数据增强，ImageNet 错误率骤降 | 🚧 |
-| 003 | Generative Adversarial Nets | 2014 | 生成模型 | 用"生成器和判别器互相博弈"绕开显式概率建模，开创对抗生成 | ⏳ |
-| 004 | Deep Residual Learning for Image Recognition | 2015 | 视觉 / 架构 | 残差连接让上百层网络可训练，几乎是所有现代深层网络的标准件 | ⏳ |
-| 005 | BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding | 2018 | NLP | 把 Transformer 编码器用于双向预训练，"预训练 + 微调"范式的代表 | ⏳ |
+| 002 | [ImageNet Classification with Deep Convolutional Neural Networks](ImageNet%20Classification%20with%20Deep%20Convolutional%20Neural%20Networks.pdf) | 2012 | 视觉 | 深度学习复兴的起点：GPU + ReLU + Dropout + 数据增强，ImageNet 错误率骤降 | ✅ |
+| 003 | [Generative Adversarial Nets](Generative%20Adversarial%20Nets.pdf) | 2014 | 生成模型 | 用"生成器和判别器互相博弈"绕开显式概率建模，开创对抗生成 | ✅ |
+| 004 | [Deep Residual Learning for Image Recognition](Deep%20Residual%20Learning%20for%20Image%20Recognition.pdf) | 2015 | 视觉 / 架构 | 残差连接让上百层网络可训练，几乎是所有现代深层网络的标准件 | ✅ |
+| 005 | [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](BERT%EF%BC%9APre-training%20of%20Deep%20Bidirectional%20Transformers%20for%20Language%20Understanding.pdf) | 2018 | NLP | 把 Transformer 编码器用于双向预训练，"预训练 + 微调"范式的代表 | ✅ |
 
 <details>
 <summary>点击展开后续规划论文（前 30 篇）</summary>
@@ -92,7 +92,7 @@
 
 ## 推荐阅读方式
 
-- **第一次读一篇**：先看 PDF 开头的"导读"部分，建立全局图景和阅读动机；再读逐段对照，遇到公式回看导读里的直觉解释；
+- **第一次读一篇**：每篇 PDF 按「原文与出处 → 逐段翻译 → 总结对照导读 + 我的理解」排列。先看开头确认论文坐标和 TL;DR，再读逐段对照（公式和表格保留原文），最后读结尾导读——那里才会告诉你哪些是核心创新、哪些是时代补丁；
 - **带着问题读**：每篇导读都回答了"它之前的世界 → 它做了什么 → 它留下了什么"三个问题，读完后试着用自己的话复述一遍；
 - **串起来读**：按清单顺序读，你会发现很多论文是在直接回应前一篇的缺陷（ResNet 回应深层退化、Transformer 回应 RNN 顺序瓶颈、BERT 把 Transformer 编码器推向预训练）；
 - **不要逐字死磕**：工程细节（数据集、超参数表）第一遍可以略过，重点看"为什么这样设计"。
@@ -102,8 +102,15 @@
 ```
 .
 ├── README.md                          # 本文件：总览、选文标准、清单
-├── Attention Is All You Need.pdf      # 每篇一个 PDF，文件名即论文名
-├── ...
+├── *.pdf                              # 每篇一个 PDF，文件名即论文名
+├── papers/                            # 每篇的源材料与构建配置（meta / body / guide / tables / img）
+│   ├── 002-alexnet/
+│   ├── 003-gan/
+│   ├── 004-resnet/
+│   └── 005-bert/
+├── tools/                             # 统一构建器：python tools/build.py papers/005-bert
+│   ├── build.py
+│   └── style.css
 └── LICENSE                            # 署名-非商业性使用-相同方式共享 4.0
 ```
 

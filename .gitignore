@@ -4,6 +4,7 @@ papers/*/source.txt
 papers/*/_raw.pdf
 papers/*/_book.html
 papers/*/_preview.png
+papers/*/_overview.png
 papers/*/_p*.png
 
 # OS / editor

@@ -1,0 +1,12 @@
+{
+  "title_en": "Generative Adversarial Nets",
+  "title_zh": "生成对抗网络",
+  "kicker": "NIPS 2014 · GAN · THE BIRTH OF ADVERSARIAL LEARNING",
+  "subtitle": "中英逐段对照全译 + 深度导读。两个网络互相博弈：一个造假，一个鉴假，直到假货以假乱真。生成模型从此不再需要马尔可夫链。",
+  "authors": "Ian J. Goodfellow &nbsp;·&nbsp; Jean Pouget-Abadie &nbsp;·&nbsp; Mehdi Mirza &nbsp;·&nbsp; Bing Xu &nbsp;·&nbsp; David Warde-Farley &nbsp;·&nbsp; Sherjil Ozair &nbsp;·&nbsp; Aaron Courville &nbsp;·&nbsp; Yoshua Bengio",
+  "venue": "Université de Montréal &nbsp;·&nbsp; Advances in Neural Information Processing Systems 27 (NIPS 2014)",
+  "arxiv": "arXiv:1406.2661",
+  "note": "Classic Papers Bilingual Guide · No.003 · 2014",
+  "series": "CLASSIC PAPERS · BILINGUAL GUIDE",
+  "filename": "Generative Adversarial Nets.pdf"
+}
