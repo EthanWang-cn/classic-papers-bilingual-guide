@@ -75,8 +75,14 @@ def render_body(lines, tables):
 def build(paper_dir):
     paper_dir = os.path.abspath(paper_dir)
     meta = json.load(open(os.path.join(paper_dir, "meta.json"), encoding="utf-8"))
-    guide = open(os.path.join(paper_dir, "guide.html"), encoding="utf-8").read()
+    # Paper order requested: 1) source links  2) paragraph-by-paragraph translation
+    # 3) summary + comparative reading guide with personal understanding
+    def _frag(name):
+        p = os.path.join(paper_dir, name)
+        return open(p, encoding="utf-8").read() if os.path.exists(p) else ""
+    front = _frag("front.html")            # source links / metadata
     body = open(os.path.join(paper_dir, "body.txt"), encoding="utf-8").read()
+    guide = _frag("guide.html")            # summary + reading guide + understanding
     tpath = os.path.join(paper_dir, "tables.json")
     tables = json.load(open(tpath, encoding="utf-8")) if os.path.exists(tpath) else {}
 
@@ -96,13 +102,11 @@ def build(paper_dir):
   <div class="cover-meta"><span>{meta['note']}</span><span>{meta.get('series','CLASSIC PAPERS · BILINGUAL GUIDE')}</span></div>
 </div>
 <div class="pagebreak"></div>
-<div class="guide">
-{guide}
-</div>
-<div class="pagebreak"></div>
 """
+    front_html = f'<div class="guide">{front}</div><div class="pagebreak"></div>' if front.strip() else ""
     body_html = render_body(body.split("\n"), tables)
-    doc = f"""<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>{title_en} · 中英对照导读</title><style>{CSS}</style></head><body>{cover}{body_html}</body></html>"""
+    guide_html = f'<div class="pagebreak"></div><div class="guide">{guide}</div>' if guide.strip() else ""
+    doc = f"""<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>{title_en} · 中英对照导读</title><style>{CSS}</style></head><body>{cover}{front_html}{body_html}{guide_html}</body></html>"""
     open(html_path, "w", encoding="utf-8").write(doc)
 
     raw_pdf = os.path.join(paper_dir, "_raw.pdf")
@@ -117,6 +121,11 @@ def build(paper_dir):
     print("chrome:", r.returncode, os.path.getsize(raw_pdf), "bytes")
 
     pdf = pymupdf.open(raw_pdf)
+    # Drop fully blank pages created by stacked page-breaks at section boundaries.
+    blank = [i for i, pg in enumerate(pdf) if not pg.get_text().strip()]
+    if blank:
+        pdf.delete_pages(blank)
+        print("removed blank pages:", [i+1 for i in blank])
     total = len(pdf)
     for i, page in enumerate(pdf):
         if i == 0:
