@@ -1,0 +1,278 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>Generative Adversarial Nets · 中英对照导读</title><style>
+@page { size: A4; margin: 17mm 15mm 19mm 15mm; }
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body {
+  --ink:#1b2733; --muted:#5c6a78; --navy:#17324e; --accent:#a94f2c;
+  --en-bg:#f4f6f8; --zh-bg:#ffffff; --line:#dde3e9;
+  font-family:"Microsoft YaHei","Noto Sans SC","PingFang SC",sans-serif;
+  color:var(--ink); font-size:10.3pt; line-height:1.72; margin:0;
+}
+a { color:inherit; text-decoration:none; }
+.pagebreak { break-before:page; }
+.avoid { break-inside:avoid; }
+
+/* ---------- cover ---------- */
+.cover { height:247mm; display:flex; flex-direction:column; justify-content:center; padding:0 8mm; position:relative; }
+.cover::before { content:""; position:absolute; left:0; top:0; width:100%; height:6mm; background:var(--navy); }
+.cover-kicker { font-family:Georgia,serif; letter-spacing:.22em; font-size:9pt; color:var(--accent); text-transform:uppercase; }
+.cover h1 { font-family:Georgia,"Times New Roman",serif; font-size:34pt; line-height:1.15; color:var(--navy); margin:14mm 0 3mm; font-weight:600; }
+.cover-zh { font-size:19pt; color:#33475c; letter-spacing:.06em; font-weight:600; }
+.cover-rule { width:38mm; height:2px; background:var(--accent); margin:11mm 0; }
+.cover-desc { font-size:11.5pt; color:var(--muted); line-height:2; max-width:135mm; }
+.cover-authors { font-family:Georgia,serif; font-size:10.5pt; color:#3b4b5c; line-height:1.9; margin-top:2mm; }
+.cover-meta { position:absolute; bottom:12mm; left:8mm; right:8mm; border-top:1px solid var(--line); padding-top:5mm; display:flex; justify-content:space-between; font-size:9pt; color:var(--muted); }
+.badge { display:inline-block; border:1px solid #c9d3dc; border-radius:3px; padding:1.5mm 3mm; font-size:8.5pt; color:#41556a; margin-right:2mm; }
+
+/* ---------- guide / prose ---------- */
+.guide h2 { font-size:16pt; color:var(--navy); margin:7mm 0 2.5mm; padding-bottom:2mm; border-bottom:2px solid var(--navy); break-after:avoid; }
+.guide h3 { font-size:12pt; color:var(--navy); margin:5mm 0 2mm; break-after:avoid; }
+.guide p { margin:0 0 2.5mm; text-align:justify; }
+.guide ul, .guide ol { margin:0 0 2.5mm; padding-left:6mm; }
+.guide li { margin-bottom:1.2mm; }
+.guide strong { color:var(--navy); }
+.guide .subtitle { font-family:Georgia,serif; font-style:italic; color:var(--muted); font-size:9.5pt; margin-top:-2mm; }
+.toc { list-style:none; padding:0; margin:0; }
+.toc li { display:flex; justify-content:space-between; border-bottom:1px dotted #cbd5de; padding:1.5mm 1mm; font-size:10pt; }
+.toc li span:last-child { color:var(--muted); font-size:9pt; font-family:Georgia,serif; }
+.callout { background:#f1f5f9; border-left:3px solid var(--navy); padding:3mm 4.5mm; margin:3mm 0; break-inside:avoid; }
+.callout .ct { font-size:9pt; letter-spacing:.1em; color:var(--navy); font-weight:700; margin-bottom:1.5mm; }
+.warn { background:#fff8ec; border-left:3px solid #d09a35; padding:3mm 4.5mm; margin:3mm 0; }
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:2.5mm; }
+.card { border:1px solid var(--line); border-radius:3px; padding:2.4mm 3.5mm; background:#fcfdfe; break-inside:avoid; }
+.card b { color:var(--navy); display:block; margin-bottom:1mm; font-size:10pt; }
+.card small { color:var(--muted); font-family:Georgia,serif; }
+
+/* ---------- tables ---------- */
+table { width:100%; border-collapse:collapse; font-size:9pt; margin:3mm 0 2mm; }
+th, td { border-bottom:1px solid #d8dfe6; padding:1.8mm 2mm; text-align:left; vertical-align:top; }
+th { background:#eaf0f6; color:var(--navy); font-weight:700; border-top:2px solid var(--navy); }
+tr:nth-child(even) td { background:#fafbfc; }
+td.num, th.num { text-align:center; font-family:Georgia,serif; }
+.tblcap { font-size:9pt; color:var(--muted); line-height:1.6; margin-bottom:2mm; }
+.tblcap b { color:var(--navy); }
+.tblwrap { break-inside:avoid; margin:5mm 0; }
+.tblwrap .tbltitle { font-size:10pt; color:var(--navy); font-weight:700; margin-bottom:1mm; }
+.tblwrap .tbltitle em { font-family:Georgia,serif; font-weight:400; color:var(--muted); font-size:9pt; }
+
+/* ---------- bilingual body ---------- */
+.chapter { margin-top:4mm; }
+.ch-head { display:flex; align-items:baseline; gap:4mm; border-bottom:2px solid var(--navy); padding-bottom:2.5mm; margin:9mm 0 4mm; break-after:avoid; }
+.ch-num { font-family:Georgia,serif; font-size:27pt; color:#c3d0dc; line-height:1; font-weight:700; }
+.ch-head h2 { font-family:Georgia,"Times New Roman",serif; font-size:17pt; color:var(--navy); margin:0; font-weight:600; }
+.ch-head .ch-zh { font-size:11pt; color:var(--accent); margin-left:auto; font-weight:600; }
+.lead { background:#f1f5f9; border-left:3px solid var(--navy); padding:3.5mm 5mm; margin:0 0 5mm; break-inside:avoid; }
+.lead .lead-label { font-size:8.5pt; letter-spacing:.12em; color:var(--navy); font-weight:700; margin-bottom:1.5mm; }
+.lead p { margin:0 0 2mm; font-size:9.8pt; line-height:1.8; text-align:justify; }
+.lead p:last-child { margin-bottom:0; }
+h3.sub { font-size:12pt; color:var(--navy); margin:6mm 0 2mm; padding-left:3mm; border-left:3px solid var(--accent); break-after:avoid; }
+h3.sub .zh { font-size:10pt; color:var(--muted); font-weight:400; margin-left:3mm; }
+h4.para { font-size:10.5pt; color:var(--navy); margin:3.5mm 0 2mm; break-after:avoid; }
+h4.para .zh { color:var(--muted); font-weight:400; margin-left:2mm; }
+.pair { margin:0 0 3.8mm; break-inside:avoid; }
+.line { display:flex; gap:2.5mm; padding:2.3mm 3mm; }
+.line .tag { flex:0 0 8mm; font-family:Georgia,serif; font-size:8pt; letter-spacing:.06em; padding-top:.6mm; }
+.line .txt { flex:1; }
+.line.en { background:var(--en-bg); border-left:2px solid #94a7b8; border-radius:0 3px 3px 0; }
+.line.en .tag { color:#7b8b9b; }
+.line.en .txt { font-family:Georgia,"Times New Roman",serif; font-size:10.2pt; line-height:1.6; color:#22303d; text-align:justify; }
+.line.zh { background:var(--zh-bg); border-left:2px solid var(--accent); margin-top:1mm; }
+.line.zh .tag { color:var(--accent); font-family:"Microsoft YaHei",sans-serif; }
+.line.zh .txt { font-size:10.3pt; line-height:1.82; text-align:justify; }
+.line .txt em { font-style:italic; }
+.note { background:#fff9ee; border-left:2px solid #d6a441; padding:2.5mm 4mm 2.5mm 4mm; font-size:9.4pt; color:#5a4a30; margin:-1.5mm 0 4mm; break-inside:avoid; line-height:1.75; }
+.note b { color:#96631a; }
+.ref { color:#2a5d8f; font-size:8pt; vertical-align:super; font-family:Georgia,serif; }
+.eqbox { background:#f7f9fb; border:1px solid #dde5ec; border-radius:3px; padding:4mm 5mm; margin:4mm 0; break-inside:avoid; text-align:center; }
+.eqbox .eq { font-family:"Cambria Math",Georgia,"Times New Roman",serif; font-size:13pt; color:#142d45; letter-spacing:.01em; line-height:1.8; }
+.eqbox .eq i { font-style:italic; }
+.eqbox .eqn { font-size:8pt; color:#8796a4; font-family:Georgia,serif; float:right; }
+.eqbox .eqnote { text-align:left; font-size:9.3pt; color:#52616f; border-top:1px dashed #d5dfe8; padding-top:2mm; margin-top:2mm; line-height:1.7; }
+.eqbox .eqnote b { color:var(--navy); }
+figure { margin:4mm 0; text-align:center; break-inside:avoid; }
+figure img { max-width:100%; max-height:120mm; object-fit:contain; }
+figure.small img { max-height:76mm; }
+.figrow { display:flex; gap:4mm; justify-content:center; }
+.figrow figure { flex:1; margin:2mm 0; }
+figcaption { font-size:8.8pt; color:#5c6a78; line-height:1.65; text-align:left; margin-top:2mm; }
+figcaption .en { font-family:Georgia,serif; font-style:italic; display:block; color:#3c4d5e; }
+figcaption .zh { display:block; margin-top:1mm; }
+.reflist { font-size:8.6pt; line-height:1.6; color:#4a5866; columns:1; }
+.reflist div { padding:1mm 0; border-bottom:1px solid #edf1f4; break-inside:avoid; }
+.reflist b { color:var(--navy); font-family:Georgia,serif; }
+.footer-note { font-size:9pt; color:var(--muted); border-top:1px solid var(--line); padding-top:3mm; margin-top:8mm; }
+</style></head><body>
+<div class="cover">
+  <div class="cover-kicker">NIPS 2014 · GAN · THE BIRTH OF ADVERSARIAL LEARNING</div>
+  <h1>Generative Adversarial Nets</h1>
+  <div class="cover-zh">生成对抗网络</div>
+  <div class="cover-rule"></div>
+  <div class="cover-desc">中英逐段对照全译 + 深度导读。两个网络互相博弈：一个造假，一个鉴假，直到假货以假乱真。生成模型从此不再需要马尔可夫链。</div>
+  <div class="cover-authors" style="margin-top:9mm">Ian J. Goodfellow &nbsp;·&nbsp; Jean Pouget-Abadie &nbsp;·&nbsp; Mehdi Mirza &nbsp;·&nbsp; Bing Xu &nbsp;·&nbsp; David Warde-Farley &nbsp;·&nbsp; Sherjil Ozair &nbsp;·&nbsp; Aaron Courville &nbsp;·&nbsp; Yoshua Bengio<br><span style="font-size:9.5pt;color:#6b7b8b">Université de Montréal &nbsp;·&nbsp; Advances in Neural Information Processing Systems 27 (NIPS 2014)</span></div>
+  <div class="cover-meta"><span>Classic Papers Bilingual Guide · No.003 · 2014</span><span>CLASSIC PAPERS · BILINGUAL GUIDE</span></div>
+</div>
+<div class="pagebreak"></div>
+<div class="guide"><h2>Part 0 · 原文与出处 · Source</h2>
+<p class="subtitle">读译文前，先给这篇论文一个准确坐标。</p>
+<table>
+<thead><tr><th style="width:24%">项目</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td><b>论文标题</b></td><td>Generative Adversarial Nets（GAN）</td></tr>
+<tr><td><b>作者</b></td><td>Ian Goodfellow, Jean Pouget-Abadie, Mehdi Mirza, Bing Xu, David Warde-Farley, Sherjil Ozair, Aaron Courville, Yoshua Bengio（蒙特利尔大学）</td></tr>
+<tr><td><b>发表</b></td><td>NIPS 2014 &nbsp;·&nbsp; arXiv:1406.2661</td></tr>
+<tr><td><b>原文链接</b></td><td><a href="https://arxiv.org/abs/1406.2661">arXiv:1406.2661</a> &nbsp;·&nbsp; <a href="https://papers.nips.cc/paper_files/paper/2014/hash/5ca3e9b122f61f8f06494c97b1afccf3-Abstract.html">NIPS 官方页面</a> &nbsp;·&nbsp; <a href="https://github.com/goodfeli/adversarial">作者代码</a></td></tr>
+<tr><td><b>历史地位</b></td><td>生成模型的分水岭；Yann LeCun 称其为"过去十年机器学习最有趣的想法"</td></tr>
+</tbody>
+</table>
+<div class="callout"><div class="ct">30 秒版本 · TL;DR</div>
+训练两个网络：<strong>生成器 G</strong> 把随机噪声变成假样本，<strong>判别器 D</strong> 判断样本是真是假。二者对抗提升，直到 D 分不出真假（准确率 50%）、G 生成的数据分布等于真实分布。全程只需反向传播，<strong>不需要 MCMC、不需要显式概率密度</strong>。</div>
+<div class="warn"><b>阅读提示：</b>这篇论文数学部分（第 4 节）证明的是"非参数极限下的全局最优"，而实践里的 GAN 训练臭名昭著地不稳定。读的时候要把<strong>优美的理论结论</strong>与<strong>混乱的工程现实</strong>分开看——导读会解释为什么理论与现实之间隔着一整个"模式崩塌"的问题。</div>
+</div><div class="pagebreak"></div><section class="chapter" id="abstract"><div class="ch-head"><span class="ch-num">★</span><h2>Abstract</h2><span class="ch-zh">摘要</span></div>
+<div class="lead"><div class="lead-label">本章导读 · READING NOTES</div><p>摘要把 GAN 的全貌浓缩在一段里：框架、理论保证、实现优势和实验。注意最后那句"不需要马尔可夫链或展开的近似推断网络"——这是它相对此前生成模型的最大卖点。</p></div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">We propose a new framework for estimating generative models via an adversarial process, in which we simultaneously train two models: a generative model G that captures the data distribution, and a discriminative model D that estimates the probability that a sample came from the training data rather than G.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">我们提出一种新的框架，通过对抗过程来估计生成模型。该框架同时训练两个模型：一个捕捉数据分布的生成模型 G，以及一个判别模型 D，用于估计某样本来自训练数据而非 G 的概率。</div></div></div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">The training procedure for G is to maximize the probability of D making a mistake. This framework corresponds to a minimax two-player game.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">G 的训练过程是最大化 D 犯错的概率。该框架对应一个极小极大的双人博弈。</div></div></div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">In the space of arbitrary functions G and D, a unique solution exists, with G recovering the training data distribution and D equal to 1/2 everywhere.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">在 G 和 D 为任意函数的空间中，存在唯一解：G 还原出训练数据的分布，而 D 处处等于 1/2。</div></div></div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">In the case where G and D are defined by multilayer perceptrons, the entire system can be trained with backpropagation. There is no need for any Markov chains or unrolled approximate inference networks during either training or generation of samples.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">当 G 和 D 由多层感知机定义时，整个系统可以用反向传播训练。无论在训练还是生成样本时，都不需要任何马尔可夫链或展开的近似推断网络。</div></div></div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">Experiments demonstrate the potential of the framework through qualitative and quantitative evaluation of the generated samples.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">实验通过对生成样本的定性与定量评估，展示了该框架的潜力。</div></div></div>
+<div class="note"><b>解读 · </b>"D 处处等于 1/2"是理解 GAN 的钥匙：判别器再也分不出真假（只能靠抛硬币），说明生成器已经完美复制了数据分布。这就是纳什均衡在生成模型里的样子。</div>
+</section>
+<section class="chapter" id="1"><div class="ch-head"><span class="ch-num">1</span><h2>1. Introduction</h2><span class="ch-zh">1. 引言</span></div>
+<div class="lead"><div class="lead-label">本章导读 · READING NOTES</div><p>引言先讲清一个背景：深度学习此前的大胜都在<strong>判别式模型</strong>（分类、识别），而<strong>生成式模型</strong>进展缓慢，因为最大似然估计里有很多难算的概率计算。GAN 的出发点就是绕开这些困难。</p></div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">The promise of deep learning is to discover rich, hierarchical models that represent probability distributions over the kinds of data encountered in artificial intelligence applications, such as natural images, audio waveforms containing speech, and symbols in natural language corpora.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">深度学习的承诺，是发现丰富的、层次化的模型，用以表示 AI 应用中遇到的各类数据的概率分布——如自然图像、含语音的音频波形、自然语言语料中的符号。</div></div></div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">So far, the most striking successes in deep learning have involved discriminative models, usually those that map a high-dimensional, rich sensory input to a class label. These striking successes have primarily been based on the backpropagation and dropout algorithms, using piecewise linear units which have a particularly well-behaved gradient.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">迄今为止，深度学习最令人瞩目的成功都来自判别式模型，通常是那些把高维、丰富的感官输入映射到类别标签的模型。这些成功主要基于反向传播和 dropout 算法，并使用梯度性质特别良好的分段线性单元。</div></div></div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">Deep generative models have had less of an impact, due to the difficulty of approximating many intractable probabilistic computations that arise in maximum likelihood estimation and related strategies, and due to difficulty of leveraging the benefits of piecewise linear units in the generative context. We propose a new generative model estimation procedure that sidesteps these difficulties.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">深度生成模型的影响则小得多，原因在于：最大似然估计及相关策略中出现的许多难解概率计算难以近似；以及在生成场景下难以利用分段线性单元的优势。我们提出一种新的生成模型估计流程，绕开了这些困难。</div></div></div>
+<div class="note"><b>解读 · </b><b>关键背景</b>：2014 年前，生成模型（RBM、DBN、VAE）要么要算配分函数（intractable），要么依赖 MCMC 采样（慢且难混合）。GAN 的核心洞见是：<strong>不直接建模概率，而是用一个判别器当"裁判"</strong>，让对抗博弈间接逼出数据分布。</div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">In the proposed adversarial nets framework, the generative model is pitted against an adversary: a discriminative model that learns to determine whether a sample is from the model distribution or the data distribution. The generative model can be thought of as analogous to a team of counterfeiters, trying to produce fake currency and use it without detection, while the discriminative model is analogous to the police, trying to detect the counterfeit currency. Competition in this game drives both teams to improve their methods until the counterfeits are indistinguishable from the genuine articles.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">在提出的对抗网络框架中，生成模型与一个对手对抗：这个判别式模型学习判断一个样本是来自模型分布还是数据分布。生成模型可被类比为一组造假者，试图制造假币并不被察觉地使用；判别模型则类似警察，试图识别假币。这场博弈中的竞争驱动双方改进方法，直到假币与真币无法区分。</div></div></div>
+<div class="note"><b>解读 · </b><b>造假者 vs 警察</b>的比喻是 GAN 出圈的原因——它让一个抽象的数学框架变得直观。做笔记时记住这个对应关系：<b>G = 造假者，D = 警察，真币 = 训练数据，假币 = G 的输出，均衡 = 警察只能瞎猜</b>。</div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">This framework can yield specific training algorithms for many kinds of model and optimization algorithm. In this article, we explore the special case when the generative model generates samples by passing random noise through a multilayer perceptron, and the discriminative model is also a multilayer perceptron. We refer to this special case as adversarial nets. In this case, we can train both models using only the highly successful backpropagation and dropout algorithms and sample from the generative model using only forward propagation. No approximate inference or Markov chains are necessary.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">该框架可以为多种模型和优化算法导出具体的训练算法。本文中，我们探讨一种特殊情况：生成模型通过把随机噪声送入多层感知机来生成样本，判别模型同样是多层感知机。我们把这一特例称为"对抗网络"。在这种情况下，我们只需用极其成功的反向传播和 dropout 算法即可训练两个模型，且只需前向传播即可从生成模型采样。不需要近似推断或马尔可夫链。</div></div></div>
+</section>
+<section class="chapter" id="2"><div class="ch-head"><span class="ch-num">2</span><h2>2. Related Work</h2><span class="ch-zh">2. 相关工作</span></div>
+<div class="lead"><div class="lead-label">本章导读 · READING NOTES</div><p>这一节梳理 GAN 之前的生成模型困境，是理解"GAN 到底绕开了什么"的必读背景。核心线索：所有旧方法都被"配分函数算不出来"或"MCMC 太慢"卡住。</p></div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">An alternative to directed graphical models with latent variables are undirected graphical models with latent variables, such as restricted Boltzmann machines (RBMs), deep Boltzmann machines (DBMs) and their numerous variants. The interactions within such models are represented as the product of unnormalized potential functions, normalized by a global summation/integration over all states of the random variables.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">带隐变量的有向图模型的一种替代，是带隐变量的无向图模型，如受限玻尔兹曼机（RBM）、深度玻尔兹曼机（DBM）及其众多变体。这类模型内部的相互作用表示为未归一化势函数的乘积，并通过对随机变量所有状态的全局求和/积分来归一化。</div></div></div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">This quantity (the partition function) and its gradient are intractable for all but the most trivial instances, although they can be estimated by Markov chain Monte Carlo (MCMC) methods. Mixing poses a significant problem for learning algorithms that rely on MCMC.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">这个量（<strong>配分函数</strong>）及其梯度，除最平凡的情形外都是难解的，尽管可以用马尔可夫链蒙特卡洛（MCMC）方法估计。对依赖 MCMC 的学习算法而言，链的混合是一个重大问题。</div></div></div>
+<div class="note"><b>解读 · </b><b>配分函数是生成模型的"万恶之源"</b>：要算真实数据的概率 p(x)，得把所有可能 x 的概率加总归一化，这个高维积分算不动。RBM/DBM 靠 MCMC 近似，但 MCMC 收敛慢、诊断难。GAN 直接绕开：我根本不建模 p(x)，我只训练一个"能骗过裁判的生成器"。</div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">Deep belief networks (DBNs) are hybrid models containing a single undirected layer and several directed layers. While a fast approximate layer-wise training criterion exists, DBNs incur the computational difficulties associated with both undirected and directed models.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">深度置信网络（DBN）是混合模型，包含一个无向层和若干有向层。虽然存在快速的逐层近似训练准则，但 DBN 同时承受着无向模型和有向模型的计算困难。</div></div></div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">Alternative criteria that do not approximate or bound the log-likelihood have also been proposed, such as score matching and noise-contrastive estimation (NCE). Both of these require the learned probability density to be analytically specified up to a normalization constant. Note that in many interesting generative models with several layers of latent variables (such as DBNs and DBMs), it is not even possible to derive a tractable unnormalized probability density.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">也有人提出不近似或界定对数似然的替代准则，如得分匹配和噪声对比估计（NCE）。二者都要求学到的概率密度在解析上可写到一个归一化常数为止。注意，在许多有趣的、具有多层隐变量的生成模型（如 DBN 和 DBM）中，甚至无法推导出一个易处理的未归一化概率密度。</div></div></div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">Some models such as denoising auto-encoders and contractive autoencoders have learning rules very similar to score matching applied to RBMs. In NCE, as in this work, a discriminative training criterion is employed to fit a generative model. However, rather than fitting a separate discriminative model, the generative model itself is used to discriminate generated data from samples a fixed noise distribution. Because NCE uses a fixed noise distribution, learning slows dramatically after the model has learned even an approximately correct distribution over a small subset of the observed variables.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">一些模型（如去噪自编码器和收缩自编码器）的学习规则，与应用于 RBM 的得分匹配非常相似。在 NCE 中，和本文一样，使用判别式训练准则来拟合生成模型。但 NCE 并非拟合一个单独的判别模型，而是用生成模型本身来区分生成数据与来自固定噪声分布的样本。由于 NCE 使用固定噪声分布，一旦模型在观测变量的一小部分上学会了近似正确的分布，学习就会急剧变慢。</div></div></div>
+<div class="note"><b>解读 · </b>NCE 与 GAN 的亲缘关系值得注意：都把"拟合生成模型"转化成"训练判别器"。区别在于 NCE 的"假样本"来自<strong>固定噪声</strong>（太容易被识破，模型学会一点后就不再进步），GAN 的假样本来自<strong>不断进化的 G</strong>（对手持续变强，形成军备竞赛）。这就是对抗的关键价值。</div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">Finally, some techniques do not involve defining a probability distribution explicitly, but rather train a generative machine to draw samples from the desired distribution. This approach has the advantage that such machines can be designed to be trained by back-propagation. Prominent recent work in this area includes the generative stochastic network (GSN) framework, which extends generalized denoising auto-encoders: both can be seen as defining a parameterized Markov chain, i.e., one learns the parameters of a machine that performs one step of a generative Markov chain.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">最后，有些技术不涉及显式定义概率分布，而是训练一个生成机器从目标分布中抽取样本。这种方法的优点是这类机器可被设计成用反向传播训练。这一领域近期突出的工作包括生成随机网络（GSN）框架，它扩展了广义去噪自编码器：二者都可视为定义了一个参数化的马尔可夫链，即学习一个执行生成式马尔可夫链一步的机器的参数。</div></div></div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">Compared to GSNs, the adversarial nets framework does not require a Markov chain for sampling. Because adversarial nets do not require feedback loops during generation, they are better able to leverage piecewise linear units, which improve the performance of backpropagation but have problems with unbounded activation when used in a feedback loop. More recent examples of training a generative machine by back-propagating into it include recent work on auto-encoding variational Bayes and stochastic backpropagation.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">与 GSN 相比，对抗网络框架采样时不需要马尔可夫链。由于对抗网络在生成时不需要反馈回路，它能更好地利用分段线性单元——这类单元改善了反向传播的性能，但在反馈回路中使用时会出现无界激活的问题。近期通过对生成机器反向传播来训练它的例子，还包括自编码变分贝叶斯和随机反向传播的工作。</div></div></div>
+</section>
+<section class="chapter" id="3"><div class="ch-head"><span class="ch-num">3</span><h2>3. Adversarial Nets</h2><span class="ch-zh">3. 对抗网络</span></div>
+<div class="lead"><div class="lead-label">本章导读 · READING NOTES</div><p>全文最核心的一节：定义 G、D、目标函数和训练算法。务必把极小极大公式和 Algorithm 1 读懂——这是后面所有 GAN 变体的出发点。</p></div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">The adversarial modeling framework is most straightforward to apply when the models are both multilayer perceptrons. To learn the generator's distribution p_g over data x, we define a prior on input noise variables p_z(z), then represent a mapping to data space as G(z; θ_g), where G is a differentiable function represented by a multilayer perceptron with parameters θ_g. We also define a second multilayer perceptron D(x; θ_d) that outputs a single scalar. D(x) represents the probability that x came from the data rather than p_g.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">当两个模型都是多层感知机时，对抗建模框架最为直接适用。为学习生成器在数据 x 上的分布 p_g，我们先在输入噪声变量上定义先验 p_z(z)，再把到数据空间的映射表示为 G(z; θ_g)，其中 G 是由参数 θ_g 的多层感知机表示的可微函数。我们再定义第二个输出单个标量的多层感知机 D(x; θ_d)。D(x) 表示 x 来自数据而非 p_g 的概率。</div></div></div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">We train D to maximize the probability of assigning the correct label to both training examples and samples from G. We simultaneously train G to minimize log(1 − D(G(z))). In other words, D and G play the following two-player minimax game with value function V(G, D):</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">我们训练 D，使其对训练样本和来自 G 的样本都尽可能正确地打标签；同时训练 G，使其最小化 log(1 − D(G(z)))。换句话说，D 和 G 进行如下带值函数 V(G, D) 的双人极小极大博弈：</div></div></div>
+<div class="eqbox"><span class="eqn">(1)</span><div class="eq">min<sub>G</sub> max<sub>D</sub> V(D, G) = E<sub>x∼p<sub>data</sub>(x)</sub>[log D(x)] + E<sub>z∼p<sub>z</sub>(z)</sub>[log(1 − D(G(z)))]</div><div class="eqnote"><b>公式解读 · </b>第一项：D 在真实数据上要输出接近 1（log D 大）；第二项：D 在 G 生成的假样本上要输出接近 0（log(1−D) 大）。D 想最大化整个式子，G 想最小化它——G 只能通过让 D(G(z)) 变大（假样本更像真的）来实现。这就是"对抗"的数学形式。</div></div>
+<div class="note"><b>解读 · </b>拆开读这个公式：E<sub>x∼p_data</sub>[log D(x)] 是"真实样本被判真的对数概率"，E<sub>z∼p_z</sub>[log(1−D(G(z)))] 是"假样本被判假的对数概率"。D 最大化二者 = 当个好警察；G 最小化第二项 = 让假样本被判真。一个 min 一个 max，就是博弈。</div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">In the next section, we present a theoretical analysis of adversarial nets, essentially showing that the training criterion allows one to recover the data generating distribution as G and D are given enough capacity, i.e., in the non-parametric limit. See Figure 1 for a less formal, more pedagogical explanation of the approach.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">下一节给出对抗网络的理论分析，本质上表明：当 G 和 D 有足够容量（即在非参数极限下），该训练准则能让人恢复出数据生成分布。图 1 给出了一个不那么正式、更具教学性的解释。</div></div></div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">In practice, we must implement the game using an iterative, numerical approach. Optimizing D to completion in the inner loop of training is computationally prohibitive, and on finite datasets would result in overfitting. Instead, we alternate between k steps of optimizing D and one step of optimizing G. This results in D being maintained near its optimal solution, so long as G changes slowly enough.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">实践中，我们必须用迭代的数值方法实现这个博弈。在训练内循环里把 D 优化到收敛，计算上代价高昂，且在有限数据集上会导致过拟合。于是我们改为交替进行：优化 D k 步，再优化 G 一步。只要 G 变化足够慢，就能让 D 保持在其最优解附近。</div></div></div>
+<div class="note"><b>解读 · </b><b>训练的实际做法</b>：不能每次都把 D 训到完美（太慢且过拟合），所以每轮只更新 D k 步（论文用 k=1）再更新 G 一步。这个"交替更新"是对抗训练的核心工程技巧，也是不稳定的来源之一——步调不对，一方会压倒另一方。</div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">In practice, equation 1 may not provide sufficient gradient for G to learn well. Early in learning, when G is poor, D can reject samples with high confidence because they are clearly different from the training data. In this case, log(1 − D(G(z))) saturates. Rather than training G to minimize log(1 − D(G(z))) we can train G to maximize log D(G(z)). This objective function results in the same fixed point of the dynamics of G and D but provides much stronger gradients early in learning.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">实践中，式 (1) 可能无法为 G 提供足够梯度使其学好。训练初期 G 很弱，D 能以高置信度拒绝其样本，因为那些样本明显不同于训练数据。此时 log(1 − D(G(z))) 会饱和。与其训练 G 最小化 log(1 − D(G(z)))，不如训练 G 最大化 log D(G(z))。这个目标函数带来相同的 G/D 动力学不动点，但在训练早期提供更强的梯度。</div></div></div>
+<div class="note"><b>解读 · </b><b>非饱和技巧</b>：早期 D 太强时，log(1−D(G(z))) 接近常数 0，梯度消失，G 学不动。改成最大化 log D(G(z))，早期梯度大得多。这是 GAN 训练中最重要的实用 trick 之一，后来的"最小二乘 GAN""WGAN"都在解决类似的梯度问题。</div>
+<figure class=" avoid"><img src="img/p3_fig1.png" alt=""><figcaption><span class="en">Figure 1. GANs trained by updating D (blue dashed) to discriminate data (black dotted) from generator distribution (green solid), while G flows toward regions classified as data. At convergence p_g = p_data and D = 1/2.</span><span class="zh">图 1 · 通过更新判别器 D（蓝色虚线）区分数据分布（黑色点线）与生成分布（绿色实线），同时让 G 向更可能被判为数据的区域流动来训练 GAN。收敛时 p_g = p_data，D = 1/2。</span></figcaption></figure><div class="note" style="margin-top:2mm"><b>读图 · </b>这是理解 GAN 动态过程最著名的一张图：(a) 接近收敛的初始状态 → (b) D 被训练到最优 → (c) G 的梯度把它拉向真实分布 → (d) 多步后两者重合，D 变成常数 1/2。逆着看，你就能理解训练为什么会震荡。</div>
+</section>
+<section class="chapter" id="4"><div class="ch-head"><span class="ch-num">4</span><h2>4. Theoretical Results</h2><span class="ch-zh">4. 理论结果</span></div>
+<div class="lead"><div class="lead-label">本章导读 · READING NOTES</div><p>这一节证明"GAN 的最优解就是生成正确分布"，是全篇数学含量最高的部分。核心链条：先求给定 G 时的最优 D，再证明此时目标函数等价于 JS 散度，从而最小值当且仅当 p_g = p_data。</p></div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">The generator G implicitly defines a probability distribution p_g as the distribution of the samples G(z) obtained when z ∼ p_z. Therefore, we would like Algorithm 1 to converge to a good estimator of p_data, if given enough capacity and training time. The results of this section are done in a non-parametric setting, e.g. we represent a model with infinite capacity by studying convergence in the space of probability density functions. We will show that this minimax game has a global optimum for p_g = p_data, and then that Algorithm 1 optimizes Eq 1.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">生成器 G 隐式定义一个概率分布 p_g——即 z ∼ p_z 时样本 G(z) 的分布。因此我们希望，若给定足够容量和训练时间，算法 1 能收敛到 p_data 的良好估计。本节结果在非参数设定下给出，即通过在概率密度函数空间中研究收敛，来表示无限容量的模型。我们将证明该极小极大博弈在 p_g = p_data 处有全局最优，然后证明算法 1 优化了式 (1)。</div></div></div>
+<h3 class="sub">4.1 Global Optimality of p_g = p_data <span class="zh">4.1 p_g = p_data 的全局最优性</span></h3>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">We first consider the optimal discriminator D for any given generator G. Proposition 1: For G fixed, the optimal discriminator is D*_G(x) = p_data(x) / (p_data(x) + p_g(x)).</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">先考虑任意给定生成器 G 时的最优判别器 D。命题 1：G 固定时，最优判别器为 D*_G(x) = p_data(x) / (p_data(x) + p_g(x))。</div></div></div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">Proof: The training criterion for the discriminator D, given any generator G, is to maximize the quantity V(G, D). For any (a, b) in R² \ {(0,0)}, the function y → a log(y) + b log(1 − y) achieves its maximum in [0,1] at a/(a+b). The discriminator does not need to be defined outside of Supp(p_data) ∪ Supp(p_g), concluding the proof.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">证明：给定任意 G 时，判别器 D 的训练准则是最大化 V(G, D)。对任意 (a,b) ∈ R² \ {(0,0)}，函数 y → a log(y) + b log(1−y) 在 [0,1] 上的最大值取在 a/(a+b) 处。判别器无需在 Supp(p_data) ∪ Supp(p_g) 之外定义，证毕。</div></div></div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">Note that the training objective for D can be interpreted as maximizing the log-likelihood for estimating the conditional probability P(Y = y | x), where Y indicates whether x comes from p_data (with y = 1) or from p_g (with y = 0).</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">注意，D 的训练目标可解释为：最大化用于估计条件概率 P(Y = y | x) 的对数似然，其中 Y 表示 x 来自 p_data（y=1）还是 p_g（y=0）。</div></div></div>
+<div class="eqbox"><span class="eqn">(5,6)</span><div class="eq">C(G) = max<sub>D</sub> V(G, D) = −log(4) + KL(p_data ‖ (p_data+p_g)/2) + KL(p_g ‖ (p_data+p_g)/2) = −log(4) + 2 · JSD(p_data ‖ p_g)</div><div class="eqnote"><b>公式解读 · </b>把最优 D 代回目标函数后，C(G) 变成常数 −log4 加上两个 KL 散度，它们合起来正是 Jensen–Shannon 散度（JSD）。这是全篇最漂亮的结论：<b>训练 GAN 就是在最小化真实分布与生成分布之间的 JS 散度</b>。</div></div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">Theorem 1: The global minimum of the virtual training criterion C(G) is achieved if and only if p_g = p_data. At that point, C(G) achieves the value −log 4. Since the Jensen–Shannon divergence between two distributions is always non-negative and zero only when they are equal, we have shown that C* = −log(4) is the global minimum of C(G) and that the only solution is p_g = p_data, i.e., the generative model perfectly replicating the data generating process.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">定理 1：虚拟训练准则 C(G) 的全局最小值当且仅当 p_g = p_data 时达到，此时 C(G) = −log 4。由于两分布间的 JS 散度总是非负且仅当二者相等时为零，我们证明了 C* = −log(4) 是 C(G) 的全局最小值，唯一解是 p_g = p_data，即生成模型完美复现了数据生成过程。</div></div></div>
+<div class="note"><b>解读 · </b><b>理解 JS 散度的意义</b>：它是对称的 KL 变体，取值 0 到 log2，衡量两个分布的重叠程度。GAN 把它作为隐式优化目标——注意是<b>隐式</b>：G 从未直接看到 p_data，只知道 D 传回的梯度。这个"通过裁判反馈逼近目标"的机制是 GAN 的精髓。</div>
+<h3 class="sub">4.2 Convergence of Algorithm 1 <span class="zh">4.2 算法 1 的收敛性</span></h3>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">Proposition 2: If G and D have enough capacity, and at each step of Algorithm 1, the discriminator is allowed to reach its optimum given G, and p_g is updated so as to improve the criterion, then p_g converges to p_data. Consider V(G, D) = U(p_g, D) as a function of p_g. Note that U(p_g, D) is convex in p_g. sup_D U(p_g, D) is convex in p_g with a unique global optimum, therefore with sufficiently small updates of p_g, p_g converges to p_x.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">命题 2：若 G 和 D 有足够容量，且算法 1 每一步都允许判别器在给定 G 下达到最优，并更新 p_g 以改进准则，则 p_g 收敛到 p_data。把 V(G,D) = U(p_g,D) 视为 p_g 的函数，注意 U 对 p_g 是凸的；sup_D U(p_g,D) 对 p_g 凸且有唯一全局最优，因此只要 p_g 更新足够小，p_g 就收敛到 p_x。</div></div></div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">In practice, adversarial nets represent a limited family of p_g distributions via the function G(z; θ_g), and we optimize θ_g rather than p_g itself. Using a multilayer perceptron to define G introduces multiple critical points in parameter space. However, the excellent performance of multilayer perceptrons in practice suggests that they are a reasonable model to use despite their lack of theoretical guarantees.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">实践中，对抗网络通过函数 G(z; θ_g) 表示有限的 p_g 分布族，我们优化的是 θ_g 而非 p_g 本身。用多层感知机定义 G 会在参数空间引入多个临界点。然而，多层感知机在实践中的优异表现表明，尽管缺乏理论保证，它们仍是合理的模型选择。</div></div></div>
+<div class="note"><b>解读 · </b>注意作者的诚实：理论证明的是"分布空间里的理想收敛"，但实践里我们优化的是神经网络参数 θ_g，存在多个局部极值，理论保证<strong>不直接适用</strong>。这种坦诚在论文里很珍贵——也预告了后来 GAN 训练的诸多麻烦。</div>
+</section>
+<section class="chapter" id="5"><div class="ch-head"><span class="ch-num">5</span><h2>5. Experiments</h2><span class="ch-zh">5. 实验</span></div>
+<div class="lead"><div class="lead-label">本章导读 · READING NOTES</div><p>GAN 的早期实验并不惊艳——图像模糊、评估困难。但作者展示了框架的可行性，并诚实地指出 Parzen 窗似然估计的高方差问题。</p></div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">We trained adversarial nets on a range of datasets including MNIST, the Toronto Face Database (TFD), and CIFAR-10. The generator nets used a mixture of rectifier linear activations and sigmoid activations, while the discriminator net used maxout activations. Dropout was applied in training the discriminator net. While our theoretical framework permits the use of dropout and other noise at intermediate layers of the generator, we used noise as the input to only the bottommost layer of the generator network.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">我们在多个数据集上训练对抗网络，包括 MNIST、多伦多人脸数据库（TFD）和 CIFAR-10。生成网络使用修正线性激活与 sigmoid 激活的混合，判别网络使用 maxout 激活。训练判别网络时应用了 dropout。虽然理论框架允许在生成器的中间层使用 dropout 和其它噪声，但我们只在生成器网络的最底层输入噪声。</div></div></div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">We estimate the probability of the test set data under p_g by fitting a Gaussian Parzen window to the samples generated with G and reporting the log-likelihood under this distribution. This method of estimating the likelihood has somewhat high variance and does not perform well in high dimensional spaces but it is the best method available to our knowledge. Advances in generative models that can sample but not estimate likelihood directly motivate further research into how to evaluate such models.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">我们通过对 G 生成的样本拟合高斯 Parzen 窗，并报告该分布下的对数似然，来估计测试数据在 p_g 下的概率。这种似然估计方法方差较高，在高维空间中表现不佳，但据我们所知这是现有最好的方法。生成模型能采样却不能直接估计似然的现状，促使我们进一步研究如何评估这类模型。</div></div></div>
+<div class="tblwrap avoid"><div class="tbltitle">表 1 · Table 1 <em>基于 Parzen 窗的对数似然估计</em></div><div class="tblcap">MNIST 报告测试样本的平均对数似然及跨样本标准误；TFD 跨数据折计算标准误。</div><table><thead><tr><th>模型 / Model</th><th class="num">MNIST</th><th class="num">TFD</th></tr></thead><tbody><tr><td>DBN [3]</td><td class="num">138 ± 2</td><td class="num">1909 ± 66</td></tr><tr><td>Stacked CAE [3]</td><td class="num">121 ± 1.6</td><td class="num">2110 ± 50</td></tr><tr><td>Deep GSN [6]</td><td class="num">214 ± 1.1</td><td class="num">1890 ± 29</td></tr><tr style="border-top:2px solid #17324e"><td><b>Adversarial nets</b></td><td class="num"><b>225 ± 2</b></td><td class="num">2057 ± 26</td></tr></tbody></table></div>
+<figure class=" avoid"><img src="img/p6_fig1.png" alt=""><figcaption><span class="en">Figure 2 (a-d). Samples from the generator: MNIST, TFD, CIFAR-10 (fully connected), CIFAR-10 (convolutional discriminator / deconvolutional generator). Rightmost column shows nearest training example to demonstrate no memorization.</span><span class="zh">图 2 (a–d) · 生成器样本：MNIST、TFD、CIFAR-10（全连接）、CIFAR-10（卷积判别器 / 反卷积生成器）。最右列显示最近的训练样本，以证明模型没有死记硬背。</span></figcaption></figure><div class="note" style="margin-top:2mm"><b>读图 · </b>"最右列显示最近邻训练样本"是一个用心设计：证明生成的图不是把训练集背下来再吐出来。早期的 GAN 图像模糊，但"样本是真正从模型分布独立采样、不依赖 MCMC 混合"这一点，本身就是框架优势。</div>
+</section>
+<section class="chapter" id="6"><div class="ch-head"><span class="ch-num">6</span><h2>6. Advantages and Disadvantages</h2><span class="ch-zh">6. 优点与缺点</span></div>
+<div class="lead"><div class="lead-label">本章导读 · READING NOTES</div><p>这节是给读者的"冷静剂"：作者亲自列出 GAN 的两大缺点——没有显式 p_g(x)，以及 G 和 D 必须同步训练（否则模式崩塌）。理解这段，就能理解后来 GAN 研究为何大多在解决稳定性问题。</p></div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">This new framework comes with advantages and disadvantages relative to previous modeling frameworks. The disadvantages are primarily that there is no explicit representation of p_g(x), and that D must be synchronized well with G during training (in particular, G must not be trained too much without updating D, in order to avoid "the Helvetica scenario" in which G collapses too many values of z to the same value of x to have enough diversity to model p_data).</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">相对此前框架，这个新框架有优点也有缺点。缺点主要是：没有 p_g(x) 的显式表示；训练时 D 必须与 G 良好同步。特别是，不能在 D 不更新的情况下过度训练 G，以避免"Helvetica 场景"——即 G 把太多 z 值坍缩到同一个 x 值，从而没有足够多样性去建模 p_data。</div></div></div>
+<div class="note"><b>解读 · </b><b>"Helvetica 场景"就是后来的"模式崩塌"（mode collapse）</b>：G 发现某一种输出特别能骗过 D，就一直生成那个，失去多样性。这是 GAN 最臭名昭著的顽疾，至今没有彻底解决。作者用"所有字母都变成 Helvetica 字体"作比喻，很形象。</div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">The advantages are that Markov chains are never needed, only backprop is used to obtain gradients, no inference is needed during learning, and a wide variety of functions can be incorporated into the model.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">优点在于：从不需要马尔可夫链；只用反向传播获得梯度；学习时不需要推断；各种函数都可以纳入模型。</div></div></div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">The aforementioned advantages are primarily computational. Adversarial models may also gain some statistical advantage from the generator network not being updated directly with data examples, but only with gradients flowing through the discriminator. This means that components of the input are not copied directly into the generator's parameters. Another advantage is that they can represent very sharp, even degenerate distributions, while methods based on Markov chains require that the distribution be somewhat blurry in order for the chains to be able to mix between modes.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">上述优点主要是计算上的。对抗模型还可能获得统计上的优势：生成器网络不直接用数据样本更新，而只通过判别器传来的梯度更新。这意味着输入的组成部分不会被直接复制到生成器参数中。另一个优点是，它们能表示非常尖锐甚至退化的分布，而基于马尔可夫链的方法要求分布稍微模糊，以便链能在不同模式间混合。</div></div></div>
+<div class="tblwrap avoid"><div class="tbltitle">表 2 · Table 2 <em>生成建模的挑战：各类方法在主要操作上的困难对比</em></div><div class="tblcap">对比深度有向图模型、深度无向图模型、生成式自编码器与对抗模型在训练、推断、采样、评估 p(x) 与设计上的差异。</div><table style="font-size:8pt"><thead><tr><th style="width:22%">&nbsp;</th><th>训练</th><th>推断</th><th>采样</th><th>评估 p(x)</th><th>模型设计</th></tr></thead><tbody><tr><td><b>有向图模型</b></td><td>训练时需要推断</td><td>学习到的近似推断</td><td>无困难</td><td>难解，可用 AIS 近似</td><td>几乎所有模型都极其困难</td></tr><tr><td><b>无向图模型</b></td><td>训练时需要推断</td><td>变分推断</td><td>需要马尔可夫链</td><td>难解，可用 AIS 近似</td><td>需精心设计以保证多重性质</td></tr><tr><td><b>生成式自编码器</b></td><td>需要 MCMC 近似配分函数梯度</td><td>基于 MCMC 的推断</td><td>需要马尔可夫链</td><td>未显式表示，可用 Parzen 估计</td><td>理论上任意可微函数均可</td></tr><tr style="border-top:2px solid #17324e"><td><b>对抗模型</b></td><td>判别器与生成器需同步</td><td>学习到的近似推断</td><td><b>无困难</b></td><td>未显式表示，可用 Parzen 估计</td><td>理论上任意可微函数均可</td></tr></tbody></table></div>
+</section>
+<section class="chapter" id="7"><div class="ch-head"><span class="ch-num">7</span><h2>7. Conclusions and Future Work</h2><span class="ch-zh">7. 结论与未来工作</span></div>
+<div class="lead"><div class="lead-label">本章导读 · READING NOTES</div><p>结论列出五个扩展方向，今天回看几乎全部被实现：条件 GAN、推断网络、半监督、效率改进。这说明 Goodfellow 对框架潜力判断得很准。</p></div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">This framework admits many straightforward extensions: 1) A conditional generative model p(x | c) can be obtained by adding c as input to both G and D. 2) Learned approximate inference can be performed by training an auxiliary network to predict z given x. This is similar to the inference net trained by the wake-sleep algorithm but with the advantage that the inference net may be trained for a fixed generator net after the generator net has finished training.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">该框架有许多直接的扩展：1）把 c 作为 G 和 D 的输入，即可得到条件生成模型 p(x|c)。2）通过训练一个辅助网络在给定 x 时预测 z，可实现学习到的近似推断。这类似于 wake-sleep 算法训练的推断网络，但优点是推断网络可在生成器训练完成后、针对固定的生成器进行训练。</div></div></div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">3) One can approximately model all conditionals p(x_S | x_¬S) where S is a subset of the indices of x by training a family of conditional models that share parameters. 4) Semi-supervised learning: features from the discriminator or inference net could improve performance of classifiers when limited labeled data is available. 5) Efficiency improvements: training could be accelerated greatly by devising better methods for coordinating G and D or determining better distributions to sample z from during training.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">3）通过训练一族共享参数的条件模型，可以近似建模所有条件分布 p(x_S | x_¬S)，其中 S 是 x 索引的子集。4）半监督学习：当标注数据有限时，判别器或推断网络的特征可以提升分类器性能。5）效率改进：通过设计更好的 G/D 协调方法，或确定训练时采样 z 的更好分布，可大幅加速训练。</div></div></div>
+<div class="pair"><div class="line en"><div class="tag">EN</div><div class="txt">This paper has demonstrated the viability of the adversarial modeling framework, suggesting that these research directions could prove useful. Acknowledgments: we thank Patrice Marcotte, Olivier Delalleau, Kyunghyun Cho, Guillaume Alain, Jason Yosinski, Yann Dauphin, the developers of Pylearn2 and Theano, and CIFAR for funding. Ian Goodfellow is supported by the 2013 Google Fellowship in Deep Learning. Finally, we thank Les Trois Brasseurs for stimulating our creativity.</div></div><div class="line zh"><div class="tag">译文</div><div class="txt">本文证明了对抗建模框架的可行性，表明这些研究方向可能是有用的。致谢：感谢 Patrice Marcotte、Olivier Delalleau、Kyunghyun Cho、Guillaume Alain、Jason Yosinski、Yann Dauphin，Pylearn2 与 Theano 的开发者，以及 CIFAR 的资助。Ian Goodfellow 获 2013 年 Google 深度学习奖学金支持。最后，感谢 Les Trois Brasseurs（一家啤酒馆）激发了我们的创造力。</div></div></div>
+<div class="note"><b>解读 · </b>最后那句致谢很有 Goodfellow 的风格：据说 GAN 的核心想法正是在酒吧和朋友争论时冒出来的。学术史上一个改变领域的点子，环境可能只是一杯啤酒。</div>
+</section><div class="pagebreak"></div><div class="guide"><div class="pagebreak"></div>
+<h2>Part 3 · 总结对照导读 + 我的理解</h2>
+<p class="subtitle">Summary, comparative reading, and what actually matters in 2026</p>
+
+<h3>一、一句话总结</h3>
+<div class="callout"><div class="ct">TL;DR</div>用<strong>两个网络的对抗博弈</strong>取代难解的似然计算：生成器造假、判别器鉴假，双方共同进步直到判别器只能随机猜（50% 准确率）。理论上这等价于最小化真实分布与生成分布的 JS 散度，实践上它绕开了 MCMC 和配分函数，只用反向传播就能训练生成模型。</div>
+
+<h3>二、它之前的世界</h3>
+<p>2014 年前，生成模型的日子不好过。RBM、DBM 这类无向图模型要算<strong>配分函数</strong>（所有状态的概率求和），高维下算不动，只能靠 MCMC 近似——慢，而且链在模式之间"混合"很差。VAE 用变分推断绕开了一部分，但要假设一个可解的后验分布。</p>
+<p>GAN 的洞见是<strong>换一个目标</strong>：不去建模"数据有多大的概率"，而是训练一个裁判来区分真假，让生成器去骗这个裁判。裁判的反馈就成了唯一的训练信号。这一步把"概率建模问题"变成了"博弈论问题"，也把生成模型从 MCMC 的枷锁里解放出来。</p>
+
+<h3>三、核心机制拆解（读懂这三点就懂 GAN）</h3>
+<table>
+<thead><tr><th style="width:26%">要点</th><th>理解</th></tr></thead>
+<tbody>
+<tr><td><b>极小极大博弈</b></td><td>min<sub>G</sub> max<sub>D</sub> V(D,G)。D 想当合格警察（真判真、假判假），G 想当高明造假者（让 D 把假判成真）。二者目标完全相反，形成对抗。</td></tr>
+<tr><td><b>最优判别器</b></td><td>给定 G，最优 D*(x) = p_data / (p_data + p_g)。直观：某点真实数据多、生成数据少，D 就该输出高概率判真。这个公式是全篇理论的支点。</td></tr>
+<tr><td><b>等价于 JS 散度</b></td><td>把 D* 代回目标，得到 C(G) = −log4 + 2·JSD(p_data ‖ p_g)。JS 散度非负且仅在两分布相等时为 0，所以全局最优解就是 p_g = p_data，此时 D ≡ 1/2。</td></tr>
+<tr><td><b>非饱和技巧</b></td><td>早期把目标从 min log(1−D(G(z))) 换成 max log D(G(z))，避免梯度消失。同一个不动点，但早期梯度强得多——这是让 GAN 真的能训起来的关键 trick。</td></tr>
+</tbody>
+</table>
+
+<h3>四、我的理解：GAN 的"新"到底是什么</h3>
+<p>很多人说 GAN 的新意是"对抗"这个比喻。比喻确实贡献了传播力，但真正的技术贡献是三点：</p>
+<ol>
+<li><strong>把生成模型的训练信号从"数据本身"换成"另一个网络的梯度"</strong>。生成器从未直接看到一张真实图片，它只知道判别器说"往这个方向改会更像"。这既是一种正则（不直接复制输入），也带来了统计与计算双重优势。</li>
+<li><strong>彻底去掉了生成过程里的循环依赖</strong>。此前 GSN/RBM 采样要跑马尔可夫链（生成一张图要迭代很多步），GAN 一次前向传播从 z 直接出图。速度差异是数量级的，这也是它后来能做实时图像生成（如 StyleGAN）的前提。</li>
+<li><strong>隐式建模分布</strong>。GAN 从未显式写出 p_g(x) 长什么样。它只保证"从 G 采出来的样本像真的"。这在数学上不够干净（无法直接算似然），但在工程上极其灵活——能表示非常尖锐的分布，这正是生成清晰图像所需要的。</li>
+</ol>
+<p>换句话说，GAN 用"放弃可解释的概率密度"换来了"可训练的清晰度"。这个交易是理解整个 GAN 家族的钥匙。</p>
+
+<h3>五、理论与现实的鸿沟（必须知道）</h3>
+<div class="warn"><b>论文证明了什么，没证明什么：</b>第 4 节的两个定理是在<strong>非参数极限</strong>（G、D 是任意函数、无限容量）下成立的。但实践中 G、D 是神经网络，我们优化的是参数 θ 而非分布 p_g 本身，存在无数局部极值。作者自己在 4.2 节末尾承认了这一点。所以"GAN 保证收敛到真实分布"这句话，只在理想化条件下成立。</div>
+<p>这个鸿沟直接导致了 GAN 后来的"黑暗历史"：</p>
+<ul>
+<li><strong>模式崩塌（Mode Collapse）</strong>：论文里叫"Helvetica 场景"——G 找到几张特别能骗过 D 的图就一直生成它们，失去多样性。</li>
+<li><strong>训练不稳定</strong>：D 太强则 G 梯度消失，D 太弱则 G 学不到有用信号。论文用 k=1 的交替更新只是权宜之计。</li>
+<li><strong>没有似然、难评估</strong>：论文自己用方差很高的 Parzen 窗估计，承认"这是现有最好的方法"。后来 FID、IS 等指标才缓解了评估难题。</li>
+</ul>
+<p>后来的 WGAN（用 Wasserstein 距离替代 JS 散度）、LSGAN、Spectral Norm、StyleGAN 等，本质上都在修补这三处。读 GAN 经典时，把"原始框架"和"后来的稳定化技巧"分开，才不会困惑于"为什么论文说收敛，我训练却崩了"。</p>
+
+<h3>六、和后续经典的因果链</h3>
+<table>
+<thead><tr><th style="width:26%">后来的工作</th><th>它回应了原始 GAN 的什么问题</th></tr></thead>
+<tbody>
+<tr><td><b>CGAN (2014)</b></td><td>论文结论第 1 条就写明了：给 G 和 D 都加条件输入 c，实现可控生成</td></tr>
+<tr><td><b>DCGAN (2015)</b></td><td>原始实验用全连接 MLP，图像质量差；DCGAN 引入卷积/反卷积架构和 batch norm，大幅提升</td></tr>
+<tr><td><b>WGAN (2017)</b></td><td>JS 散度在两分布不重叠时梯度为 0 → 改用 Wasserstein 距离，缓解梯度消失与模式崩塌</td></tr>
+<tr><td><b>StyleGAN (2018)</b></td><td>把生成器改造成风格控制的分层结构，生成照片级人脸——GAN 视觉质量的巅峰</td></tr>
+<tr><td><b>扩散模型 (2020)</b></td><td>另一条生成路线崛起：放弃对抗，改用去噪打分匹配。稳定性更好，最终在图像生成上取代 GAN</td></tr>
+</tbody>
+</table>
+
+<h3>七、常见误解</h3>
+<ul>
+<li><strong>"GAN 生成图片比真实还真"？</strong> 原始 GAN（2014）生成的图非常模糊。高质量是 2015–2019 年 DCGAN/ProGAN/StyleGAN 逐步做到的，别把后来的成果记到这篇头上。</li>
+<li><strong>"D 的输出是"这是真图的概率""？</strong> 严格说 D(x) 是 x 来自数据分布（而非 p_g）的概率，训练目标把它校准到这个含义。均衡时 D=1/2 不是因为"一半图真一半图假"，而是两分布完全重合。</li>
+<li><strong>"论文证明了 GAN 一定收敛"？</strong> 只在非参数、无限容量、D 每次训练到最优的理想条件下。实践中没有这种保证。</li>
+<li><strong>"GAN 已经过时了"？</strong> 图像生成的主流确实转向扩散模型，但对抗思想已渗透进对抗训练、域适配、超分辨率等领域，并未消失。</li>
+</ul>
+
+<h3>八、如果你只读三处</h3>
+<ol>
+<li><strong>1 节造假者/警察比喻</strong> —— 30 秒建立直觉；</li>
+<li><strong>式 (1) 与图 1</strong> —— 理解博弈的动态过程；</li>
+<li><strong>6 节的缺点与"Helvetica 场景"</strong> —— 理解 GAN 为什么难训练，以及后续研究在解决什么。</li>
+</ol>
+<div class="footer-note">导读与"我的理解"为本仓库原创，依据论文原文撰写。论文版权归原作者所有。更多论文请见 <span style="font-family:Georgia,serif">Classic Papers Bilingual Guide</span> · No.003。</div>
+</div></body></html>

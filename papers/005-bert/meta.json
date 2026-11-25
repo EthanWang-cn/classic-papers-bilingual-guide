@@ -1,0 +1,12 @@
+{
+  "title_en": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+  "title_zh": "BERT：用于语言理解的深度双向 Transformer 预训练",
+  "kicker": "NAACL 2019 · BERT · THE IMAGENET MOMENT OF NLP",
+  "subtitle": "中英逐段对照全译 + 深度导读。把语言模型从「只看前文」改成「做完形填空」，BERT 让每个词同时看见左右上下文——一个预训练模型加一层输出头，横扫 11 项 NLP 任务。",
+  "authors": "Jacob Devlin &nbsp;·&nbsp; Ming-Wei Chang &nbsp;·&nbsp; Kenton Lee &nbsp;·&nbsp; Kristina Toutanova",
+  "venue": "Google AI Language &nbsp;·&nbsp; Proceedings of NAACL-HLT 2019",
+  "arxiv": "arXiv:1810.04805",
+  "note": "Classic Papers Bilingual Guide · No.005 · 2018/2019",
+  "series": "CLASSIC PAPERS · BILINGUAL GUIDE",
+  "filename": "BERT：Pre-training of Deep Bidirectional Transformers for Language Understanding.pdf"
+}

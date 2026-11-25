@@ -5,7 +5,6 @@
 **用中英对照的方式，读透 AI 领域最值得读的 100 篇论文。**
 
 [![Papers](https://img.shields.io/badge/papers-5%2F100-blue?style=flat-square)](README.md)
-[![License](https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-lightgrey?style=flat-square)](LICENSE)
 [![Stars](https://img.shields.io/github/stars/EthanWang-cn/classic-papers-bilingual-guide?style=social)](https://github.com/EthanWang-cn/classic-papers-bilingual-guide/stargazers)
 
 </div>
@@ -102,11 +101,10 @@
 ```
 .
 ├── README.md      # 本文件：总览、选文标准、清单
-├── *.pdf          # 每篇一个 PDF，文件名即论文名
-└── LICENSE        # 署名-非商业性使用-相同方式共享 4.0
+└── *.pdf          # 每篇一个 PDF，文件名即论文名
 ```
 
-仓库只收录成品 PDF，不收录构建脚本与中间源文件。
+仓库只收录 README 与成品 PDF，不收录构建脚本、源文件与许可证文件。版权说明见下文。
 
 ## 关于翻译与版权
 

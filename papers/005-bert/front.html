@@ -1,0 +1,15 @@
+<h2>Part 0 · 原文与出处 · Source</h2>
+<p class="subtitle">读译文前，先给这篇论文一个准确坐标。</p>
+<table>
+<thead><tr><th style="width:24%">项目</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td><b>论文标题</b></td><td>BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding（BERT）</td></tr>
+<tr><td><b>作者</b></td><td>Jacob Devlin, Ming-Wei Chang, Kenton Lee, Kristina Toutanova（Google AI Language）</td></tr>
+<tr><td><b>发表</b></td><td>NAACL-HLT 2019（arXiv 预印本 2018 年 10 月，2019 年 5 月修订）</td></tr>
+<tr><td><b>原文链接</b></td><td><a href="https://arxiv.org/abs/1810.04805">arXiv:1810.04805</a> &nbsp;·&nbsp; <a href="https://aclanthology.org/N19-1423/">ACL Anthology（NAACL 2019）</a> &nbsp;·&nbsp; <a href="https://github.com/google-research/bert">作者代码与预训练模型</a></td></tr>
+<tr><td><b>历史地位</b></td><td>NLP 的「ImageNet 时刻」：11 项任务 SOTA，GLUE 80.5、SQuAD 2.0 F1 83.1；预训练 + 微调成为此后十年的默认范式</td></tr>
+</tbody>
+</table>
+<div class="callout"><div class="ct">30 秒版本 · TL;DR</div>
+在 BERT 之前，语言模型只能<strong>从左到右</strong>读（GPT），或者把两个单向模型<strong>浅层拼接</strong>（ELMo）。BERT 用「<strong>掩码语言模型</strong>」——随机盖住 15% 的词，让模型根据左右上下文猜回来——绕开了「双向会看见自己」的死结，训练出<strong>每一层都双向</strong>的 Transformer。下游任务只需加一层输出头微调，就刷新 11 项纪录。</div>
+<div class="warn"><b>阅读提示：</b>全文最关键的只有 3.1 节的两个预训练任务和图 3 的架构对比。第 4 节表格多，第一遍抓表 1（GLUE）、表 5（消融：双向 vs 单向）即可；第 5.2 节的「模型越大、小任务也越好」是后来大模型时代的伏笔。附录 A.1 的 80/10/10 掩码策略一定要看——那是全篇最容易被忽略的工程细节。</div>

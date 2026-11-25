@@ -1,0 +1,63 @@
+<div class="pagebreak"></div>
+<h2>Part 3 · 总结对照导读 + 我的理解</h2>
+<p class="subtitle">Summary, comparative reading, and what actually matters in 2026</p>
+
+<h3>一、一句话总结</h3>
+<div class="callout"><div class="ct">TL;DR</div>把<strong>深度 CNN</strong>放到<strong>百万级标注数据</strong>和<strong>GPU 算力</strong>上，再用 ReLU、Dropout、数据增强解决"训得动、不过拟合"两个工程难题，就在 ImageNet 上把此前最好的错误率<strong>腰斩</strong>。它不是提出了新理论，而是第一次让人相信：<strong>端到端学习可以战胜几十年积累的手工特征工程</strong>。</div>
+
+<h3>二、它之前的世界（为什么这不是一次渐进改良）</h3>
+<p>2012 年之前，视觉识别的主流流水线是：<strong>人工设计特征（SIFT/HOG）+ 编码（稀疏编码/Fisher Vector）+ 浅层分类器（SVM）</strong>。每一步都由人类专家精心调校。ImageNet 上当时的最好 top-5 错误率是 25.7%（SIFT + FV）。</p>
+<p> AlexNet 把整条流水线换成"像素进、类别出"的一个网络，一步跨到 <strong>15.3%</strong>。差 10 个百分点，在那个语境下是<strong>代际差</strong>，不是同一个赛道的微调。这就是它能引爆深度学习的原因——不是模型结构多新奇（LeNet 1998 就有 CNN），而是<strong>规模效应第一次被验证</strong>。</p>
+
+<h3>三、逐项拆解：哪些是干货，哪些是时代补丁</h3>
+<table>
+<thead><tr><th style="width:24%">论文中的组件</th><th style="width:34%">它解决了什么</th><th>2026 年视角</th></tr></thead>
+<tbody>
+<tr><td><b>ReLU</b> (3.1)</td><td>tanh 在饱和区梯度消失，ReLU 让训练快 6 倍</td><td>✅ 至今是默认激活函数，几乎所有网络都在用。这是本文最持久的贡献</td></tr>
+<tr><td><b>Dropout</b> (4.2)</td><td>6000 万参数 + 120 万样本必然过拟合；用随机丢弃禁止神经元共适应</td><td>✅ 仍是全连接层的标配正则手段，视角从"集成"扩展到"抗共适应"</td></tr>
+<tr><td><b>数据增强</b> (4.1)</td><td>随机裁剪 + 翻转把数据扩 2048 倍；PCA 颜色扰动模拟光照不变性</td><td>✅ 裁剪/翻转是今天训练 CNN 的起手式；AutoAugment 等是其自动化后继</td></tr>
+<tr><td><b>深度</b> (1, 7)</td><td>移除任何卷积层掉约 2 个点，证明深层表示的价值</td><td>✅ 结论被完全确立；直接引出 2015 年 ResNet 解决"深了反而难训"的问题</td></tr>
+<tr><td><b>GPU 并行</b> (3.2)</td><td>3GB 显存装不下，被迫把网络劈成两半，只在特定层通信</td><td>⚠️ 具体方案已淘汰，但"通信 vs 计算"的权衡是今天模型并行的同一个问题</td></tr>
+<tr><td><b>局部响应归一化 LRN</b> (3.3)</td><td>通道间侧抑制，降 1.4%/1.2% 错误率</td><td>❌ 已被 BatchNorm (2015) 取代。属"结论对、实现过时"——归一化有用被继承，LRN 本身没人用了</td></tr>
+<tr><td><b>重叠池化</b> (3.4)</td><td>池化步长小于核宽，轻微抗过拟合</td><td>❌ 今天多用 stride=2 卷积或常规池化直接替代，重叠池化是过渡设计</td></tr>
+<tr><td><b>大核 + 大步长</b> (3.5)</td><td>第一层 11×11 stride 4，为快速降分辨率</td><td>❌ 后来被"多个小核堆叠"取代（VGG/GoogLeNet），感受野相同但参数更少、非线性更多</td></tr>
+</tbody>
+</table>
+<div class="warn"><b>读经典的第一个心法：</b>把组件分成"思想"和"实现"。ReLU/Dropout/深度/数据增强是思想，至今活着；LRN/重叠池化/双 GPU 拆分是实现，被时代替换。<strong>一篇论文的真正价值在思想层，而不是让你照抄它的超参数。</strong></div>
+
+<h3>四、我的理解：AlexNet 到底"新"在哪</h3>
+<p>很多人误以为 AlexNet 的新意是"发明 CNN"。不是。CNN 的核心思想（局部感受野、权值共享、池化）在 LeNet（1998）就有了。AlexNet 的真正贡献是三件事同时做成：</p>
+<ol>
+<li><strong>证明了"规模"本身就是一种方法</strong>。6000 万参数在当年是疯狂的，但作者用实验说明：只要有足够数据和算力，大模型的性能会持续上升。引言最后一句"wait for faster GPUs and bigger datasets"就是全部秘密——这句话在 2026 年读起来像预言。</li>
+<li><strong>把一堆"小 trick"系统地组合并验证</strong>。ReLU、Dropout、数据增强单独看都不算原创（Dropout 来自 Hinton 组同期工作），但本文用<strong>严谨的消融实验</strong>证明每个组件贡献多少错误率下降。这种"组件化 + 逐项验证"的工程科学方法，比任何一个 trick 都影响深远。</li>
+<li><strong>开源了代码（cuda-convnet）</strong>。在 2012 年，把训练代码公开是稀缺行为。这直接让全世界能复现和改造，加速了整个领域。</li>
+</ol>
+<p>换句话说，AlexNet 是<strong>第一篇"现代意义"的深度学习论文</strong>：大数据 + 大模型 + GPU + 开源 + 系统消融。它开创的不只是模型架构，更是一种做研究的方式。</p>
+
+<h3>五、和后续经典的因果链（串起来读）</h3>
+<table>
+<thead><tr><th style="width:22%">后来的论文</th><th>它直接回应了 AlexNet 的什么问题</th></tr></thead>
+<tbody>
+<tr><td><b>VGG (2014)</b></td><td>AlexNet 的大核（11×11）→ 用连续 3×3 小核替代，同样感受野、更少参数、更多非线性</td></tr>
+<tr><td><b>GoogLeNet (2014)</b></td><td> AlexNet 全连接层参数太集中 → 用 Inception 模块和全局平均池化大幅减参</td></tr>
+<tr><td><b>BatchNorm (2015)</b></td><td>AlexNet 的 LRN + 手写初始化 + 小心调学习率 → 用归一化让深层网络更好训</td></tr>
+<tr><td><b>ResNet (2015)</b></td><td>AlexNet 说"深度很重要" → 但更深反而难训，ResNet 用残差连接解决，把深度推到 152 层</td></tr>
+<tr><td><b>Dropout 系列 (2014–)</b></td><td>AlexNet 证明了 dropout 有效 → 后续有 inverted dropout、DropBlock、Stochastic Depth 等改良</td></tr>
+</tbody>
+</table>
+
+<h3>六、常见误解</h3>
+<ul>
+<li><strong>"AlexNet 发明了 CNN"？</strong> 不是。LeNet-5（1998）就奠定了 CNN  basics。AlexNet 是让 CNN 在大规模任务上<strong>第一次大放异彩</strong>。</li>
+<li><strong>"15.3% 是单模型成绩"？</strong> 不是。那是 7 个 CNN 的集成（其中 2 个在完整 ImageNet 上预训练）。单模型是 18.2%。读结果表时一定要看清是不是 ensemble。</li>
+<li><strong>"LRN 是必须的经典组件"？</strong> 不是。它是当年的工程补丁，2015 年后被 BatchNorm 完全取代。把它当历史读，不要当最佳实践抄。</li>
+<li><strong>"两个 GPU 是因为模型并行更好"？</strong> 不是。纯粹是 3GB 显存装不下的被迫之举。今天单卡显存早已不是问题，但"何时切分模型"仍是算力工程的核心问题。</li>
+</ul>
+
+<h3>七、如果你只读三处</h3>
+<ol>
+<li><strong>引言最后两段</strong>（"wait for faster GPUs and bigger datasets"）—— 理解深度学习时代的世界观；</li>
+<li><strong>3.1 节 ReLU 与图 1</strong> —— 理解一个简单改动如何改变训练动力学；</li>
+<li><strong>表 1 / 表 2</strong> —— 用数字感受什么叫"代际差"。</li>
+</ol>
+<div class="footer-note">导读与"我的理解"为本仓库原创，依据论文原文撰写。论文版权归原作者所有。更多论文请见 <span style="font-family:Georgia,serif">Classic Papers Bilingual Guide</span> · No.002。</div>
