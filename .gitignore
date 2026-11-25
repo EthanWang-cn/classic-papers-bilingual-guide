@@ -1,3 +1,7 @@
+# 仓库只收录成品 PDF；构建器与源材料仅保留在本地
+tools/
+papers/
+
 # Build intermediates (source downloads, generated HTML/raw PDF, preview images)
 papers/*/source.pdf
 papers/*/source.txt

@@ -101,18 +101,12 @@
 
 ```
 .
-├── README.md                          # 本文件：总览、选文标准、清单
-├── *.pdf                              # 每篇一个 PDF，文件名即论文名
-├── papers/                            # 每篇的源材料与构建配置（meta / body / guide / tables / img）
-│   ├── 002-alexnet/
-│   ├── 003-gan/
-│   ├── 004-resnet/
-│   └── 005-bert/
-├── tools/                             # 统一构建器：python tools/build.py papers/005-bert
-│   ├── build.py
-│   └── style.css
-└── LICENSE                            # 署名-非商业性使用-相同方式共享 4.0
+├── README.md      # 本文件：总览、选文标准、清单
+├── *.pdf          # 每篇一个 PDF，文件名即论文名
+└── LICENSE        # 署名-非商业性使用-相同方式共享 4.0
 ```
+
+仓库只收录成品 PDF，不收录构建脚本与中间源文件。
 
 ## 关于翻译与版权
 
