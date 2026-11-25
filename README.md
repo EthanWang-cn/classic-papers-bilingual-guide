@@ -4,8 +4,6 @@
 
 **用中英对照的方式，读透 AI 领域最值得读的 100 篇论文。**
 
-[![Papers](https://img.shields.io/badge/papers-5%2F100-blue?style=flat-square)](README.md)
-[![Stars](https://img.shields.io/github/stars/EthanWang-cn/classic-papers-bilingual-guide?style=social)](https://github.com/EthanWang-cn/classic-papers-bilingual-guide/stargazers)
 
 </div>
 
